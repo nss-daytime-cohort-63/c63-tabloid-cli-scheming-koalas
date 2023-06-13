@@ -59,7 +59,7 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine($"{blog.Id} - {blog.Title} - {blog.Url}");
             }
-            Console.Write("\nPress any key to continue");
+            Console.WriteLine("\nPress any key to continue");
             Console.ReadKey();
         }
 
@@ -79,7 +79,31 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Edit()
         {
-            throw new NotImplementedException();
+            List();
+            Console.WriteLine("What blog entry would you like to Edit?");
+
+           //ERRORS IF LEFT BLANK - BUG
+           int selection = Int32.Parse(Console.ReadLine());
+            Blog selectedBlog = _blogRepository.Get(selection);
+
+            if (selectedBlog == null)
+            {
+                return;
+            }
+            Console.WriteLine();
+            Console.WriteLine("New Title (blank to leave unchanged: ");
+            string title = Console.ReadLine();
+            if(!string.IsNullOrEmpty(title))
+            {
+                selectedBlog.Title = title;
+            }
+            Console.WriteLine("New Url (blank to leave unchanged: ");
+            string url = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                selectedBlog.Url = url;
+            }
+            _blogRepository.Update(selectedBlog);
         }
 
         private void Remove()
