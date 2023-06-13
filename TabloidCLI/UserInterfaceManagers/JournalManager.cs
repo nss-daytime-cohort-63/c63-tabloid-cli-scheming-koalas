@@ -87,7 +87,7 @@ namespace TabloidCLI.UserInterfaceManagers
         private void Edit()
         {
             List();
-            Console.WriteLine("What journal entry would you like to remove?");
+            Console.WriteLine("What journal entry would you like to Edit?");
 
             //ERRORS IF LEFT BLANK - BUG
             int selection = Int32.Parse(Console.ReadLine());
