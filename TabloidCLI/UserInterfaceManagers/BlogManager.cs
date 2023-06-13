@@ -84,7 +84,13 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Remove()
         {
-            throw new NotImplementedException();
+            List();
+            Console.Write("Which Blog should you remove? ");
+            int selection = Int32.Parse(Console.ReadLine());
+            _blogRepository.Delete(selection);
+            Console.WriteLine("Blog deleted");
+            Console.Write("Press any Key to Continue");
+            Console.ReadKey();
         }
 
 
