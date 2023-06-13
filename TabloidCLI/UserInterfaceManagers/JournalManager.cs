@@ -36,7 +36,6 @@ namespace TabloidCLI.UserInterfaceManagers
                     List();
                     return this;
                 case "2":
-               
                     Add();
                     return this;
                 case "3":
@@ -58,7 +57,7 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Journal> journals = _journalRepository.GetAll();
             foreach (Journal journal in journals)
             {
-                Console.WriteLine(journal);
+                Console.WriteLine($"{journal.Id} - {journal.Title} - Written at {journal.CreateDateTime} - {journal.Content}");
             }
         }
 
