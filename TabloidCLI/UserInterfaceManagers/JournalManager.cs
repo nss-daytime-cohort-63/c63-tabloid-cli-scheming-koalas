@@ -1,4 +1,7 @@
 ﻿using System;
+using TabloidCLI.Repositories;
+using TabloidCLI.Models;
+using System.Globalization;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -6,9 +9,13 @@ namespace TabloidCLI.UserInterfaceManagers
     {
         private readonly IUserInterfaceManager _parentUI;
 
+        private JournalRepository _journalRepository;
+        private string _connectionString;
         public JournalManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
+            _journalRepository = new JournalRepository(connectionString);
+            _connectionString = connectionString;
         }
 
         public IUserInterfaceManager Execute()
@@ -28,6 +35,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     List();
                     return this;
                 case "2":
+               
                     Add();
                     return this;
                 case "3":
@@ -51,7 +59,22 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Add()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("New Journal Entry");
+            Journal journal = new Journal();
+
+            Console.Write("What is the Title: ");
+           journal.Title = Console.ReadLine();
+            Console.Write("What is the Content: ");
+            journal.Content = Console.ReadLine();
+
+            journal.CreateDateTime = DateTime.Now;
+
+            _journalRepository.Insert(journal);
+
+            Console.WriteLine("New Journal Added");
+            Console.Write("Press any Key to Continue");
+            Console.ReadKey();
+
         }
 
         private void Edit()
