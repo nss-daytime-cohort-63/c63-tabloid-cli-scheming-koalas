@@ -21,6 +21,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
+            Console.Clear();
             Console.WriteLine("Journal Menu");
             Console.WriteLine(" 1) List Journal Entries");
             Console.WriteLine(" 2) Add Journal Entry");
@@ -88,7 +89,13 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Remove()
         {
-            throw new NotImplementedException();
+            List();
+            Console.WriteLine("What journal entry would you like to remove?");
+            int selection = Int32.Parse(Console.ReadLine());
+            _journalRepository.Delete(selection);
+            Console.WriteLine("Journal entry deleted");
+            Console.Write("Press any Key to Continue");
+            Console.ReadKey();
         }
 
 
