@@ -2,6 +2,7 @@
 using TabloidCLI.Repositories;
 using TabloidCLI.Models;
 using System.Globalization;
+using System.Collections.Generic;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -54,7 +55,11 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-            throw new NotImplementedException();
+            List<Journal> journals = _journalRepository.GetAll();
+            foreach (Journal journal in journals)
+            {
+                Console.WriteLine(journal);
+            }
         }
 
         private void Add()
