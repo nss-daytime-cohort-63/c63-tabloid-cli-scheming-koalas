@@ -60,6 +60,8 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine($"{journal.Id} - {journal.Title} - Written at {journal.CreateDateTime} - {journal.Content}");
             }
+            Console.Write("Press any Key to Continue");
+            Console.ReadKey();
         }
 
         private void Add()
@@ -84,7 +86,36 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Edit()
         {
-            throw new NotImplementedException();
+            List();
+            Console.WriteLine("What journal entry would you like to remove?");
+
+            //ERRORS IF LEFT BLANK - BUG
+            int selection = Int32.Parse(Console.ReadLine());
+            Journal selectedJournal = _journalRepository.Get(selection);
+
+
+            if (selectedJournal == null)
+            {
+                return;
+            }
+
+            Console.WriteLine();
+            Console.Write("New Title (blank to leave unchanged: ");
+            string title = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                selectedJournal.Title = title;
+            }
+            Console.Write("New Content (blank to leave unchanged: ");
+            string content = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(content))
+            {
+                selectedJournal.Content = content;
+            }
+
+            _journalRepository.Update(selectedJournal);
+
+
         }
 
         private void Remove()
