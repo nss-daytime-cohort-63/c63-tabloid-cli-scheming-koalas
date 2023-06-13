@@ -1,6 +1,7 @@
 ﻿using System;
 using TabloidCLI.Models;
 using TabloidCLI.Repositories;
+using System.Collections.Generic;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -19,6 +20,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
+            Console.Clear();
             Console.WriteLine("Blog Menu");
             Console.WriteLine(" 1) List Blog Entries");
             Console.WriteLine(" 2) Add Blog Entry");
@@ -52,7 +54,13 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-            throw new NotImplementedException();
+            List<Blog> blogs = _blogRepository.GetAll();
+            foreach (Blog blog in blogs)
+            {
+                Console.WriteLine($"{blog.Id} - {blog.Title} - {blog.Url}");
+            }
+            Console.Write("\nPress any key to continue");
+            Console.ReadKey();
         }
 
         private void Add()

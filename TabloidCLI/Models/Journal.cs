@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace TabloidCLI.Models
 {
+    // C# model representation of what the Journal database looks like
     public class Journal
     {
         public int Id { get; set; }
