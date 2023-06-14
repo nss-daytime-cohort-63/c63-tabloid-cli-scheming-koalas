@@ -66,6 +66,9 @@ namespace TabloidCLI.Repositories
                     {
                         Post post = null;
 
+                        Post newPost = null;
+
+
                         if (reader.Read())
                         {
                             post = new Post()
