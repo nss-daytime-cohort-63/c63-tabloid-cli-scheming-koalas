@@ -1,14 +1,26 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using TabloidCLI.Repositories;
+using TabloidCLI.Models;
+using System.Collections.Generic;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
     public class PostManager : IUserInterfaceManager
     {
         private readonly IUserInterfaceManager _parentUI;
-
+        private PostRepository _postRepository;
+        private AuthorRepository _authorRepository;
+        private BlogRepository _blogRepository;
+        private string _connectionString;
+        
         public PostManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
+            _postRepository = new PostRepository(connectionString);
+            _authorRepository = new AuthorRepository(connectionString);
+            _blogRepository = new BlogRepository(connectionString);
+            _connectionString = connectionString;
         }
 
         public IUserInterfaceManager Execute()
@@ -51,7 +63,45 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Add()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("New Post Entry");
+            Post post = new Post();
+
+            Console.WriteLine("What is the title?");
+            post.Title = Console.ReadLine();
+            Console.WriteLine("What is the url");
+            post.Url = Console.ReadLine();
+            post.PublishDateTime = DateTime.Now;
+
+            List<Author> authors = _authorRepository.GetAll();
+            foreach (Author author in authors)
+            {
+                Console.WriteLine($"{author.Id} - {author.FullName}");
+            }
+
+            Console.WriteLine("Who is the author?");
+            int selectedAuthorId = Int32.Parse(Console.ReadLine());
+            post.Author = _authorRepository.Get(selectedAuthorId);
+
+
+            List<Blog> blogs = _blogRepository.GetAll();
+            foreach (Blog blog in blogs)
+            {
+                Console.WriteLine($"{blog.Id} - {blog.Title} - {blog.Url}");
+            }
+
+            Console.WriteLine("What is the blog?");
+            int selectedBlogId = Int32.Parse(Console.ReadLine());
+            post.Blog = _blogRepository.Get(selectedBlogId);
+
+
+            _postRepository.Insert(post);
+            Console.WriteLine("Post added successfully");
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
+
+
+
         }
 
         private void Edit()
