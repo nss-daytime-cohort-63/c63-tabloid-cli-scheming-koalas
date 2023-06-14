@@ -40,7 +40,7 @@ namespace TabloidCLI.UserInterfaceManagers
             switch (choice)
             {
                 case "1":
-                    //View();
+                    View();
                     return this;
                 case "2":
                     //ViewBlogPosts();
@@ -59,6 +59,14 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
+        private void View()
+        {
+            Post post = _postRepository.Get(_postId);
+            Console.WriteLine($"Title: {post.Title}");
+            Console.WriteLine($"URL: {post.Url}");
+            Console.WriteLine($"Publication Date: {post.PublishDateTime}");
+            Console.WriteLine();
+        }
 
     }
 }
