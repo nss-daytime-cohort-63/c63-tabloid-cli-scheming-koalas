@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using TabloidCLI.Repositories;
 using TabloidCLI.Models;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -13,7 +14,7 @@ namespace TabloidCLI.UserInterfaceManagers
         private AuthorRepository _authorRepository;
         private BlogRepository _blogRepository;
         private string _connectionString;
-        
+
         public PostManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
@@ -59,20 +60,10 @@ namespace TabloidCLI.UserInterfaceManagers
         private void List()
         {
             List<Post> posts = _postRepository.GetAll();
-            List<Author> authors = _authorRepository.GetAll();
-            List<Blog> blogs = _blogRepository.GetAll();
             foreach (Post post in posts)
             {
-                foreach (Author author in authors)
-                {       
-                    foreach (Blog blog in blogs)
-                    { 
-                Console.WriteLine($"{post.Id} - {post.Title} - {post.Url} - Published at {post.PublishDateTime} - Written by {post.Author.Id} - {author.FullName} - Written for {post.Blog.Id} - {blog.Title}");
-                     }
-                }
+                Console.WriteLine($"{post.Id} - {post.Title} - Written at {post.PublishDateTime} - {post.Blog}");
             }
-            Console.Write("Press any Key to Continue");
-            Console.ReadKey();
         }
 
         private void Add()
@@ -134,7 +125,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     }
                 }
             }
-        Console.WriteLine("What post entry would you like to edit?");
+            Console.WriteLine("What post entry would you like to edit?");
 
             //ERRORS IF LEFT BLANK - BUG
             int selection = Int32.Parse(Console.ReadLine());
@@ -161,8 +152,8 @@ namespace TabloidCLI.UserInterfaceManagers
                 selectedPost.Url = url;
             }
 
-            Console.Write("New Publish Date - MM/DD/YYYY (blank to leave unchanged):  ");            
-            string publishDateTime = Console.ReadLine();            
+            Console.Write("New Publish Date - MM/DD/YYYY (blank to leave unchanged):  ");
+            string publishDateTime = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(publishDateTime))
             {
                 selectedPost.PublishDateTime = DateTime.Parse(publishDateTime);
@@ -181,7 +172,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 selectedPost.Author.Id = Int32.Parse(selectedAuthorId);
             }
 
-                selectedPost.Author = _authorRepository.Get(Int32.Parse(selectedAuthorId));
+            selectedPost.Author = _authorRepository.Get(Int32.Parse(selectedAuthorId));
 
 
             List<Blog> blogIds = _blogRepository.GetAll();
@@ -199,7 +190,7 @@ namespace TabloidCLI.UserInterfaceManagers
             selectedPost.Blog = _blogRepository.Get(Int32.Parse(selectedBlogId));
 
         }
-        
+
 
         private void Remove()
         {
