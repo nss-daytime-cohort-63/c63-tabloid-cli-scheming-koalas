@@ -31,6 +31,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine(" 2) Add Post Entry");
             Console.WriteLine(" 3) Edit Post Entry");
             Console.WriteLine(" 4) Remove Post Entry");
+            Console.WriteLine(" 5) Post Details");
             Console.WriteLine(" 0) Go Back");
 
             Console.Write("> ");
@@ -49,6 +50,11 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "4":
                     Remove();
                     return this;
+                case "5":
+                    List();
+                    Console.WriteLine("Select a post");
+                    Post selectedPost = _postRepository.Get(Int32.Parse(Console.ReadLine()));
+                    return new PostDetailManager(this, _connectionString, selectedPost.Id);
                 case "0":
                     return _parentUI;
                 default:
