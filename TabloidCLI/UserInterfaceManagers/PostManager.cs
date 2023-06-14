@@ -115,16 +115,17 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Post> posts = _postRepository.GetAll();
             List<Author> authors = _authorRepository.GetAll();
             List<Blog> blogs = _blogRepository.GetAll();
+
             foreach (Post post in posts)
             {
-                foreach (Author author in authors)
-                {
-                    foreach (Blog blog in blogs)
-                    {
-                        Console.WriteLine($"{post.Id} - {post.Title} - {post.Url} - Published at {post.PublishDateTime} - Written by {post.Author.Id} - {author.FullName} - Written for {post.Blog.Id} - {blog.Title}");
-                    }
-                }
+                Author matchingAuthor = _authorRepository.Get(post.Author.Id);
+                Blog matchingBlog = _blogRepository.Get(post.Blog.Id);
+
+                Console.WriteLine(@$"{post.Id} - {post.Title} - {post.Url} - Published at {post.PublishDateTime}
+    - Written by {matchingAuthor.Id} - {matchingAuthor.FullName}
+    - Written for {matchingBlog.Id} - {matchingBlog.Title}");
             }
+
             Console.WriteLine("What post entry would you like to edit?");
 
             //ERRORS IF LEFT BLANK - BUG
