@@ -1,14 +1,21 @@
 ﻿using System;
+using TabloidCLI.Models;
+using TabloidCLI.Repositories;
+using System.Collections.Generic;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
     public class TagManager : IUserInterfaceManager
     {
+        private TagRepository _tagRepository;
         private readonly IUserInterfaceManager _parentUI;
+        private string _connectionString;
 
         public TagManager(IUserInterfaceManager parentUI, string connectionString)
         {
+            _tagRepository = new TagRepository(connectionString);
             _parentUI = parentUI;
+            _connectionString = connectionString;
         }
 
         public IUserInterfaceManager Execute()
@@ -46,22 +53,57 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-            throw new NotImplementedException();
+            List<Tag> tags = _tagRepository.GetAll();
+            foreach (Tag tag in tags)
+            {
+                Console.WriteLine($"{tag.Id} - {tag.Name}");
+            }
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
         }
 
         private void Add()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("New Tag");
+            Tag tag = new Tag();
+
+            Console.WriteLine("Tag Name");
+            tag.Name = Console.ReadLine();
+
+            _tagRepository.Insert(tag);
+
+
         }
 
         private void Edit()
         {
-            throw new NotImplementedException();
+            List();
+            Console.WriteLine("Which Tag would you like to edit?");
+            int selection = Int32.Parse(Console.ReadLine());
+            Tag selectedTag =_tagRepository.Get(selection);
+
+            if (selectedTag == null)
+            {
+                return;
+            }
+            Console.WriteLine();
+            Console.WriteLine("New Name (blank to leave unchanged: ");
+            string name = Console.ReadLine();
+            if (!string.IsNullOrEmpty(name))
+            {
+                selectedTag.Name = name;
+            }
+            _tagRepository.Update(selectedTag);
         }
 
         private void Remove()
         {
-            throw new NotImplementedException();
+            List();
+            Console.Write("Which Tag should you remove? ");
+            int selection = Int32.Parse(Console.ReadLine());
+            _tagRepository.Delete(selection);
+            Console.Write("Press any Key to Continue");
+            Console.ReadKey();
         }
     }
 }
