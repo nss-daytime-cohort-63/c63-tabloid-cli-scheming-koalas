@@ -82,6 +82,7 @@ namespace TabloidCLI
             }
         }
 
+
         public void Update(Tag tag)
         {
             using (SqlConnection conn = Connection)
