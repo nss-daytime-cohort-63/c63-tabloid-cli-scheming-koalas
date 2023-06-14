@@ -11,6 +11,7 @@ namespace TabloidCLI.UserInterfaceManagers
         private BlogRepository _blogRepository;
         private PostRepository _postRepository;
         private TagRepository _tagRepository;
+        private BlogTagRepository _blogTagRepository;
         private int _blogId;
 
         public BlogDetailManager(IUserInterfaceManager parentUI, string connectionString, int blogId)
@@ -19,6 +20,7 @@ namespace TabloidCLI.UserInterfaceManagers
             _blogRepository = new BlogRepository(connectionString);
             _postRepository = new PostRepository(connectionString);
             _tagRepository = new TagRepository(connectionString);
+            _blogTagRepository = new BlogTagRepository(connectionString);
             _blogId = blogId;
         }
 
@@ -72,7 +74,26 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void AddTag()
         {
-            throw new NotImplementedException();
+            //ADD METHOD TO ONLY SHOW TAGS THEY DON'T HAVE
+            List<Tag> allTags = _tagRepository.GetAll();
+
+            foreach (Tag tag in allTags)
+            {
+                Console.WriteLine($"{tag.Id} - {tag.Name}");
+            }
+
+            Console.WriteLine("What tag would you like to add?");
+            int selectedTag = Int32.Parse(Console.ReadLine());
+            BlogTag newTag = new BlogTag()
+            {
+                BlogId = _blogId,
+                TagId = selectedTag
+            };
+            _blogTagRepository.Insert(newTag);
+            Console.WriteLine("Tag added successfully");
+            Console.Write("Press any key to continue...");
+            Console.ReadKey();
+
         }
 
         private void RemoveTag()

@@ -65,8 +65,6 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine($"{blog.Id} - {blog.Title} - {blog.Url}");
             }
-            Console.WriteLine("\nPress any key to continue");
-            Console.ReadKey();
         }
 
         private void Add()
