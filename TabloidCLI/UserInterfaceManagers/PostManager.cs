@@ -181,7 +181,7 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine($"{blog.Id} - {blog.Title}");
             }
-            Console.WriteLine("New author ID (blank to leave unchanged):  ");
+            Console.WriteLine("New blog ID (blank to leave unchanged):  ");
             string selectedBlogId = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(selectedBlogId))
             {
@@ -189,6 +189,8 @@ namespace TabloidCLI.UserInterfaceManagers
             }
 
             selectedPost.Blog = _blogRepository.Get(Int32.Parse(selectedBlogId));
+
+            _postRepository.Update(selectedPost);
 
         }
 

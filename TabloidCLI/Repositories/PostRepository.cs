@@ -66,9 +66,6 @@ namespace TabloidCLI.Repositories
                     {
                         Post post = null;
 
-                        Post newPost = null;
-
-
                         if (reader.Read())
                         {
                             post = new Post()
@@ -186,12 +183,13 @@ namespace TabloidCLI.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "UPDATE Post SET Title = @title, Url = @url, PublishDateTime = @publishDateTime, AuthorId = @authorId, BlogId = @blogId";
+                    cmd.CommandText = "UPDATE Post SET Title = @title, Url = @url, PublishDateTime = @publishDateTime, AuthorId = @authorId, BlogId = @blogId WHERE Id = @id";
                     cmd.Parameters.AddWithValue("@title", post.Title);
                     cmd.Parameters.AddWithValue("@url", post.Url);
                     cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
                     cmd.Parameters.AddWithValue("@authorId", post.Author.Id);
                     cmd.Parameters.AddWithValue("@blogId", post.Blog.Id);
+                    cmd.Parameters.AddWithValue("@id", post.Id);
 
                     cmd.ExecuteNonQuery();
                 }
