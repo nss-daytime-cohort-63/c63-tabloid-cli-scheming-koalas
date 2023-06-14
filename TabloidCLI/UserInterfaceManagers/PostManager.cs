@@ -58,7 +58,21 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-            throw new NotImplementedException();
+            List<Post> posts = _postRepository.GetAll();
+            List<Author> authors = _authorRepository.GetAll();
+            List<Blog> blogs = _blogRepository.GetAll();
+            foreach (Post post in posts)
+            {
+                foreach (Author author in authors)
+                {       
+                    foreach (Blog blog in blogs)
+                    { 
+                Console.WriteLine($"{post.Id} - {post.Title} - {post.Url} - Published at {post.PublishDateTime} - Written by {post.Author.Id} - {author.FullName} - Written for {post.Blog.Id} - {blog.Title}");
+                     }
+                }
+            }
+            Console.Write("Press any Key to Continue");
+            Console.ReadKey();
         }
 
         private void Add()
@@ -70,7 +84,8 @@ namespace TabloidCLI.UserInterfaceManagers
             post.Title = Console.ReadLine();
             Console.WriteLine("What is the url");
             post.Url = Console.ReadLine();
-            post.PublishDateTime = DateTime.Now;
+            Console.WriteLine("Enter the date MM/DD/YYYY");
+            post.PublishDateTime = DateTime.Parse(Console.ReadLine());
 
             List<Author> authors = _authorRepository.GetAll();
             foreach (Author author in authors)
@@ -106,8 +121,85 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Edit()
         {
-            throw new NotImplementedException();
+            List<Post> posts = _postRepository.GetAll();
+            List<Author> authors = _authorRepository.GetAll();
+            List<Blog> blogs = _blogRepository.GetAll();
+            foreach (Post post in posts)
+            {
+                foreach (Author author in authors)
+                {
+                    foreach (Blog blog in blogs)
+                    {
+                        Console.WriteLine($"{post.Id} - {post.Title} - {post.Url} - Published at {post.PublishDateTime} - Written by {post.Author.Id} - {author.FullName} - Written for {post.Blog.Id} - {blog.Title}");
+                    }
+                }
+            }
+        Console.WriteLine("What post entry would you like to edit?");
+
+            //ERRORS IF LEFT BLANK - BUG
+            int selection = Int32.Parse(Console.ReadLine());
+            Post selectedPost = _postRepository.Get(selection);
+
+            if (selectedPost == null)
+            {
+                return;
+            }
+
+            Console.WriteLine();
+
+            Console.Write("New Title (blank to leave unchanged):  ");
+            string title = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                selectedPost.Title = title;
+            }
+
+            Console.Write("New URL (blank to leave unchanged):  ");
+            string url = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                selectedPost.Url = url;
+            }
+
+            Console.Write("New Publish Date - MM/DD/YYYY (blank to leave unchanged):  ");            
+            string publishDateTime = Console.ReadLine();            
+            if (!string.IsNullOrWhiteSpace(publishDateTime))
+            {
+                selectedPost.PublishDateTime = DateTime.Parse(publishDateTime);
+            }
+
+            List<Author> authorIds = _authorRepository.GetAll();
+            foreach (Author author in authors)
+            {
+                Console.WriteLine($"{author.Id} - {author.FullName}");
+            }
+
+            Console.WriteLine("New author ID (blank to leave unchanged):  ");
+            string selectedAuthorId = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(selectedAuthorId))
+            {
+                selectedPost.Author.Id = Int32.Parse(selectedAuthorId);
+            }
+
+                selectedPost.Author = _authorRepository.Get(Int32.Parse(selectedAuthorId));
+
+
+            List<Blog> blogIds = _blogRepository.GetAll();
+            foreach (Blog blog in blogs)
+            {
+                Console.WriteLine($"{blog.Id} - {blog.Title}");
+            }
+            Console.WriteLine("New author ID (blank to leave unchanged):  ");
+            string selectedBlogId = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(selectedBlogId))
+            {
+                selectedPost.Blog.Id = Int32.Parse(selectedBlogId);
+            }
+
+            selectedPost.Blog = _blogRepository.Get(Int32.Parse(selectedBlogId));
+
         }
+        
 
         private void Remove()
         {
