@@ -1,4 +1,6 @@
 ﻿using System;
+using TabloidCLI.Models;
+using TabloidCLI.Repositories;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -6,9 +8,14 @@ namespace TabloidCLI.UserInterfaceManagers
     {
         private readonly IUserInterfaceManager _parentUI;
 
+        private PostRepository _postRepository;
+        private string _connectionString;
+
         public PostManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
+            _postRepository = new PostRepository(connectionString);
+            _connectionString = connectionString;
         }
 
         public IUserInterfaceManager Execute()
@@ -61,7 +68,13 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Remove()
         {
-            throw new NotImplementedException();
+            List();
+            Console.WriteLine("What post would you like to remove?");
+            int selection = Int32.Parse(Console.ReadLine());
+            _postRepository.Delete(selection);
+            Console.WriteLine("Post has been deleted");
+            Console.Write("Press any key to Continue");
+            Console.ReadKey();
         }
 
 
