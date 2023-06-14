@@ -119,5 +119,20 @@ namespace TabloidCLI.Repositories
                 }
             }
         }
+
+        public void removeTag(int blogId, int tagId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM BlogTag WHERE tagId =@id AND BlogId = @blogId;";
+                    cmd.Parameters.AddWithValue("@blogId",blogId);
+                    cmd.Parameters.AddWithValue("@id", tagId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

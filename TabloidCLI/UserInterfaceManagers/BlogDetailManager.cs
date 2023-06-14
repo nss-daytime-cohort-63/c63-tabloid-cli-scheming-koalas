@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using TabloidCLI.Models;
 using TabloidCLI.Repositories;
@@ -29,7 +30,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Blog blog = _blogRepository.Get(_blogId);
             Console.WriteLine($"{blog.Title} Details");
             Console.WriteLine(" 1) View");
-            Console.WriteLine(" 2) Add Tage");
+            Console.WriteLine(" 2) Add Tag");
             Console.WriteLine(" 3) Remove Tag");
             Console.WriteLine(" 4) View Posts");
             Console.WriteLine(" 0) Go Back");
@@ -98,7 +99,18 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void RemoveTag()
         {
-            throw new NotImplementedException();
+            List<Tag> tags = _blogRepository.GetTags(_blogId);
+            Console.WriteLine("Blog Tags");
+            foreach (Tag tag in tags)
+            {
+                Console.WriteLine($"{tag.Id} - {tag.Name}");
+            }
+            Console.WriteLine("Which Tag Do You Want To Remove?");
+            int tagSelection = Int32.Parse(Console.ReadLine());
+            _blogTagRepository.removeTag(_blogId, tagSelection);
+            Console.WriteLine("You Have Successfully Removed The Tag");
+            Console.Write("Press any key to continue...");
+            Console.ReadKey();
         }
 
         private void ViewPosts()
