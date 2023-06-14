@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using TabloidCLI.Models;
-using TabloidCLI.Repositories;
 
 namespace TabloidCLI.Repositories
 {
@@ -12,7 +11,30 @@ namespace TabloidCLI.Repositories
 
         public List<Post> GetAll()
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT * FROM Post";
+
+                    List<Post> posts = new List<Post>();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Post post = new Post()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                            Url = reader.GetString(reader.GetOrdinal("URL")),
+                        };
+                        posts.Add(post);
+                    }
+                    reader.Close();
+                    return posts;
+                }
+            }
         }
 
         public Post Get(int id)
@@ -83,7 +105,7 @@ namespace TabloidCLI.Repositories
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
-                using(SqlCommand cmd = conn.CreateCommand())
+                using (SqlCommand cmd = conn.CreateCommand())
                 {
                     //Title, URL, Publication Date, Author OBJ, Blog Obj
                     cmd.CommandText = @"INSERT INTO Post
@@ -99,12 +121,10 @@ namespace TabloidCLI.Repositories
                 }
             }
         }
-
         public void Update(Post post)
         {
             throw new NotImplementedException();
         }
-
         public void Delete(int id)
         {
             using (SqlConnection conn = Connection)
@@ -114,10 +134,22 @@ namespace TabloidCLI.Repositories
                 {
                     cmd.CommandText = @"DELETE FROM Author WHERE id = @id";
                     cmd.Parameters.AddWithValue("@id", id);
-
                     cmd.ExecuteNonQuery();
                 }
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

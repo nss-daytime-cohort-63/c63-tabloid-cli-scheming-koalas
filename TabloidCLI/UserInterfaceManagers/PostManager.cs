@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using TabloidCLI.Repositories;
 using TabloidCLI.Models;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -13,7 +14,7 @@ namespace TabloidCLI.UserInterfaceManagers
         private AuthorRepository _authorRepository;
         private BlogRepository _blogRepository;
         private string _connectionString;
-        
+
         public PostManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
@@ -58,7 +59,11 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-            throw new NotImplementedException();
+            List<Post> posts = _postRepository.GetAll();
+            foreach (Post post in posts)
+            {
+                Console.WriteLine($"{post.Id} - {post.Title} - Written at {post.PublishDateTime} - {post.Blog}");
+            }
         }
 
         private void Add()
