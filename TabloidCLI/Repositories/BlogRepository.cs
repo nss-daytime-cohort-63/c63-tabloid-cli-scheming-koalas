@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using TabloidCLI.Models;
@@ -119,6 +120,36 @@ namespace TabloidCLI.Repositories
                     cmd.Parameters.AddWithValue("@id", id);
 
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public List<Tag> GetTags(int id)
+        {
+            using(SqlConnection conn = Connection)
+            {
+
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "select tag.Id as TagId,*from blogTag join tag on tagId = tag.id join blog on blogId = blog.id where blogId = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    List<Tag> tags = new List<Tag>();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Tag tag = new Tag()
+                        {
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            Id = reader.GetInt32(reader.GetOrdinal("TagId")),
+                        };
+                       
+                        tags.Add(tag);
+                    }
+                    reader.Close();
+                    return tags;
                 }
             }
         }

@@ -26,6 +26,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine(" 2) Add Blog Entry");
             Console.WriteLine(" 3) Edit Blog Entry");
             Console.WriteLine(" 4) Remove Blog Entry");
+            Console.WriteLine(" 5) Blog Details");
             Console.WriteLine(" 0) Go Back");
 
             Console.Write("> ");
@@ -44,6 +45,11 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "4":
                     Remove();
                     return this;
+                case "5": 
+                    List();
+                    Console.WriteLine("Select a blog");
+                    Blog selectedBlog = _blogRepository.Get(Int32.Parse(Console.ReadLine()));
+                    return new BlogDetailManager(this, _connectionString, selectedBlog.Id);
                 case "0":
                     return _parentUI;
                 default:
@@ -59,8 +65,6 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine($"{blog.Id} - {blog.Title} - {blog.Url}");
             }
-            Console.WriteLine("\nPress any key to continue");
-            Console.ReadKey();
         }
 
         private void Add()
