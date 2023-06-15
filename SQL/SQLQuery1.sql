@@ -1,0 +1,11 @@
+﻿SELECT * FROM Author
+
+SELECT * FROM  Blog
+
+SELECT * FROM Journal
+
+SELECT * FROM Note
+
+SELECT * FROM Post
+
+SELECT * FROM Tag

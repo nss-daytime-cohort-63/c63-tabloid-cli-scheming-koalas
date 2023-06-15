@@ -14,6 +14,7 @@ namespace TabloidCLI.UserInterfaceManagers
         private AuthorRepository _authorRepository;
         private PostRepository _postRepository;
         private TagRepository _tagRepository;
+        private PostTagRepository _postTagRepository;
         private int _postId;
 
         public PostDetailManager(IUserInterfaceManager parentUI, string connectionString, int postId)
@@ -22,6 +23,7 @@ namespace TabloidCLI.UserInterfaceManagers
             _authorRepository = new AuthorRepository(connectionString);
             _postRepository = new PostRepository(connectionString);
             _tagRepository = new TagRepository(connectionString);
+            _postTagRepository = new PostTagRepository(connectionString);
             _postId = postId;
         }
 
@@ -46,7 +48,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     //ViewBlogPosts();
                     return this;
                 case "3":
-                    //AddTag();
+                    AddTag();
                     return this;
                 case "4":
                     //RemoveTag();
@@ -67,6 +69,32 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine($"Publication Date: {post.PublishDateTime}");
             Console.WriteLine();
         }
+
+        private void AddTag()
+        {
+            // Add method to only show tags they don't have
+            List<Tag> allTags = _tagRepository.GetAll();
+
+            foreach (Tag tag in allTags)
+            {
+                Console.WriteLine($"{tag.Id} - {tag.Name}");
+            }
+
+            Console.WriteLine("What tag would you like to add?");
+            int selectedTag = Int32.Parse(Console.ReadLine());
+            PostTag newTag = new PostTag()
+            {
+                PostId = _postId,
+                TagId = selectedTag
+            };
+            _postTagRepository.Insert(newTag);
+            Console.WriteLine("Tag added successfully");
+            Console.Write("Press any key to continue...");
+            Console.ReadKey();
+              
+        }
+
+
 
     }
 }
