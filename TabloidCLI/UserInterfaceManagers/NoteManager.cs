@@ -42,11 +42,9 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "2":
                     Add();
                     return this;
-    
                  case "4":
                     Remove();
-                    return this;
-               
+                    return this;              
                 case "0":
                     return _parentUI;
                 default:
@@ -57,12 +55,35 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
+            Console.WriteLine("Notes for this Post:");
+            
+
+            List<Note> notes = _noteRepository.GetAllByPost(_postId);
+            foreach (Note note in notes)
+            {
+                Console.WriteLine($"{note.Id} - {note.Title} - {note.Content} - Created On: {note.CreateDateTime}");
+            }
+
+            Console.Write("Press any key to continue");
+            Console.ReadKey();
 
         }
 
         private void Add()
         {
+            Console.WriteLine("New Note Entry");
+            Note note = new Note();
 
+            Console.WriteLine("What is the title?");
+            note.Title = Console.ReadLine();
+            Console.WriteLine("What is the content?");
+            note.Content = Console.ReadLine();
+            note.CreateDateTime = DateTime.Now;
+            note.postId = _postId;
+            _noteRepository.Insert(note);
+            Console.WriteLine("New Note Successfully Added");
+            Console.Write("Press any key to continue");
+            Console.ReadKey();
         }
 
         private void Remove()
