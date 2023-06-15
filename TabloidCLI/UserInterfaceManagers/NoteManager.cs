@@ -57,12 +57,24 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-
+           
         }
 
         private void Add()
         {
+            Console.WriteLine("New Note Entry");
+            Note note = new Note();
 
+            Console.WriteLine("What is the title?");
+            note.Title = Console.ReadLine();
+            Console.WriteLine("What is the content?");
+            note.Content = Console.ReadLine();
+            note.CreateDateTime = DateTime.Now;
+            note.postId = _postId;
+            _noteRepository.Insert(note);
+            Console.WriteLine("New Note Successfully Added");
+            Console.Write("Press any key to continue");
+            Console.ReadKey();
         }
 
         private void Remove()

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TabloidCLI.Models;
@@ -39,8 +40,15 @@ namespace TabloidCLI.Repositories
                 conn.Open();
                 using(SqlCommand cmd = conn.CreateCommand())
                 {
-                  //  cmd.CommandText = @"INSERT INTO Note"
-                   // (
+                    cmd.CommandText = @"INSERT INTO Note
+                    (Title, Content, CreateDateTime, postId)
+                    OUTPUT INSERTED.Id
+                    VALUES (@title, @content, @createDateTime, @postId)";
+                    cmd.Parameters.AddWithValue("@title", note.Title);
+                    cmd.Parameters.AddWithValue("@content", note.Content);
+                    cmd.Parameters.AddWithValue("@createDateTime", note.CreateDateTime);
+                    cmd.Parameters.AddWithValue("@postId", note.postId);
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
