@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
     public class SearchResults<T>
     {
-        private List<T> _results = new List<T>();
+        static private List<T> _results = new List<T>();
+        
 
-        public string Title { get; set; } = "Search Results";
+
+
+        public string Title { get; set; } = $"Search Results";
 
         public bool NoResultsFound
         {
