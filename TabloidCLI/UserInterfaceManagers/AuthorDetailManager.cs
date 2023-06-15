@@ -74,7 +74,7 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Post> posts = _postRepository.GetByAuthor(_authorId);
             foreach (Post post in posts)
             {
-                Console.WriteLine(post);
+                Console.WriteLine($"{post.Id} - {post.Title} - {post.Url}");
             }
             Console.WriteLine();
         }
