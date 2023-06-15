@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,7 +34,15 @@ namespace TabloidCLI.Repositories
 
         public void Insert(Note note)
         {
-
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using(SqlCommand cmd = conn.CreateCommand())
+                {
+                  //  cmd.CommandText = @"INSERT INTO Note"
+                   // (
+                }
+            }
         }
     }
 }
