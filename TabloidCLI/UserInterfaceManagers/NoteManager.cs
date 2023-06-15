@@ -67,7 +67,13 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Remove()
         {
-
+            List();
+            Console.WriteLine("What post would you like to remove?");
+            int selection = Int32.Parse(Console.ReadLine());
+            _noteRepository.Delete(selection);
+            Console.WriteLine("Note has been deleted");
+            Console.Write("Press any key to continue");
+            Console.ReadKey();
         }
     }
 }
