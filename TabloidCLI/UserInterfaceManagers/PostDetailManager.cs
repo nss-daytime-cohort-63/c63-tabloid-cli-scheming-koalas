@@ -53,13 +53,13 @@ namespace TabloidCLI.UserInterfaceManagers
                     AddTag();
                     return this;
                 case "4":
-                    //RemoveTag();
+                    RemoveTag();
                     return this;
                 case "5":
 
                     return new NoteManager(this, _connectionString,_postId);
                     //RemoveTag();
-                    return this;
+                   // return this;
                 case "0":
                     return _parentUI;
                 default:
@@ -106,7 +106,6 @@ namespace TabloidCLI.UserInterfaceManagers
               
         }
 
-        // REMOVE TAG CODE - NEED GetTags()
         private void RemoveTag()
         {
             List<Tag> tags = _postRepository.GetTags(_postId);
@@ -122,7 +121,6 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("Press any key to continue...");
             Console.ReadKey();
         }
-        // REMOVE TAG CODE
 
     }
 }
