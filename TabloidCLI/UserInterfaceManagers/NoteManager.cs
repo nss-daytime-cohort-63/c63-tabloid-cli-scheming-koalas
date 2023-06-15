@@ -42,7 +42,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "2":
                     Add();
                     return this;
-                 case "4":
+                 case "3":
                     Remove();
                     return this;              
                 case "0":
@@ -88,8 +88,12 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Remove()
         {
-            List();
-            Console.WriteLine("What post would you like to remove?");
+            List<Note> notes = _noteRepository.GetAllByPost(_postId);
+            foreach (Note note in notes)
+            {
+                Console.WriteLine($"{note.Id} - {note.Title} - {note.Content} - Created On: {note.CreateDateTime}");
+            }
+            Console.WriteLine("What note would you like to remove?");
             int selection = Int32.Parse(Console.ReadLine());
             _noteRepository.Delete(selection);
             Console.WriteLine("Note has been deleted");
