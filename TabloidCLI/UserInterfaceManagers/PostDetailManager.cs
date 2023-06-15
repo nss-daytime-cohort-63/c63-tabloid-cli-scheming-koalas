@@ -16,7 +16,7 @@ namespace TabloidCLI.UserInterfaceManagers
         private TagRepository _tagRepository;
         private PostTagRepository _postTagRepository;
         private int _postId;
-
+        private string _connectionString;
         public PostDetailManager(IUserInterfaceManager parentUI, string connectionString, int postId)
         {
             _parentUI = parentUI;
@@ -25,8 +25,9 @@ namespace TabloidCLI.UserInterfaceManagers
             _tagRepository = new TagRepository(connectionString);
             _postTagRepository = new PostTagRepository(connectionString);
             _postId = postId;
-        }
+            _connectionString = connectionString;
 
+        }
         public IUserInterfaceManager Execute()
         {
             Post post = _postRepository.Get(_postId);
@@ -35,6 +36,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine(" 2) View Blog Posts");
             Console.WriteLine(" 3) Add Tag");
             Console.WriteLine(" 4) Remove Tag");
+            Console.WriteLine(" 5) Note Management");
             Console.WriteLine(" 0) Go Back");
 
             Console.Write("> ");
@@ -51,6 +53,11 @@ namespace TabloidCLI.UserInterfaceManagers
                     AddTag();
                     return this;
                 case "4":
+                    //RemoveTag();
+                    return this;
+                case "5":
+
+                    return new NoteManager(this, _connectionString,_postId);
                     //RemoveTag();
                     return this;
                 case "0":

@@ -17,6 +17,6 @@ namespace TabloidCLI.Models
 
     public DateTime CreateDateTime { get; set; }
 
-    public int PostId { get; set; }
+    public Post Post{ get; set; }
     }
 }
