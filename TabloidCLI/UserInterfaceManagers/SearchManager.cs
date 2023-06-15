@@ -37,6 +37,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     SearchPosts();
                     return this;
                 case "4":
+                    SearchAll();
                     return this;
                 case "0":
                     return _parentUI;
@@ -50,6 +51,7 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             Console.Write("Tag> ");
             string tagName = Console.ReadLine();
+            Console.WriteLine();
 
             SearchResults<Author> results = _tagRepository.SearchAuthors(tagName);
 
@@ -67,6 +69,7 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             Console.Write("Tag> ");
             string tagName = Console.ReadLine();
+            Console.WriteLine();
 
             SearchResults<Post> results = _tagRepository.SearchPosts(tagName);
 
@@ -84,6 +87,7 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             Console.Write("Tag> ");
             string tagName = Console.ReadLine();
+            Console.WriteLine();
 
             SearchResults<Blog> results = _tagRepository.SearchBlogs(tagName);
 
@@ -94,6 +98,31 @@ namespace TabloidCLI.UserInterfaceManagers
             else
             {
                 results.Display();
+            }
+        }
+
+        private void SearchAll()
+        {
+            Console.Write("Tag> ");
+            string tagName = Console.ReadLine();
+            Console.WriteLine();
+
+            SearchResults<Blog> Bresults = _tagRepository.SearchBlogs(tagName);
+            SearchResults<Author> Aresults = _tagRepository.SearchAuthors(tagName);
+            SearchResults<Post> Presults = _tagRepository.SearchPosts(tagName);
+
+            if (Bresults.NoResultsFound && Aresults.NoResultsFound && Presults.NoResultsFound)
+            {
+                Console.WriteLine($"No results for {tagName}");
+            }
+            else
+            {
+                Console.WriteLine("Blog");
+                Bresults.Display();
+                Console.WriteLine("Author");
+                Aresults.Display();
+                Console.WriteLine("Post");
+                Presults.Display();
             }
         }
     }
