@@ -195,6 +195,34 @@ namespace TabloidCLI.Repositories
                 }
             }
         }
+
+        public List<Tag> GetTags(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT * FROM Post p LEFT JOIN PostTag pt ON p.Id = pt.PostId LEFT JOIN Tag t on pt.TagId = t.Id WHERE PostId = @Id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    List<Tag> tags = new List<Tag>();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Tag tag = new Tag()
+                        {
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                                Id = reader.GetInt32(reader.GetOrdinal("TagId")),
+                        };
+                        tags.Add(tag);
+                    }
+                    reader.Close();
+                    return tags;
+                }
+            }
+        }
         public void Delete(int id)
         {
             using (SqlConnection conn = Connection)
