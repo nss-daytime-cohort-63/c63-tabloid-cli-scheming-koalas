@@ -94,7 +94,23 @@ namespace TabloidCLI.UserInterfaceManagers
               
         }
 
-
+        // REMOVE TAG CODE - NEED GetTags()
+        private void RemoveTag()
+        {
+            List<Tag> tags = _postRepository.GetTags(_postId);
+            Console.WriteLine("Post Tags");
+            foreach (Tag tag in tags)
+            {
+                Console.WriteLine($"{tag.Id} - {tag.Name}");
+            }
+            Console.WriteLine("Which Tag Do You Want To Remove?");
+            int tagSelection = Int32.Parse(Console.ReadLine());
+            _postTagRepository.removeTag(_postId, tagSelection);
+            Console.WriteLine("You have successfully removed the tag");
+            Console.Write("Press any key to continue...");
+            Console.ReadKey();
+        }
+        // REMOVE TAG CODE
 
     }
 }
